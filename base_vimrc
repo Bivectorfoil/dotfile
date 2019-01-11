@@ -1,0 +1,150 @@
+set nocompatible  " not compatible with vi
+" set runtimepath+=~/.vim  " set runtime for loading color scheme
+
+" base vimrc file, fast, useful, server-friendly
+"_____________________________________________________
+"| Shortcuts list:
+"|
+"| kj 替换 Esc
+"| 分屏窗口移动, Smart way to move between windows
+"| Ctrl-j -> j
+"| <C-k>  -> k
+"| <C-h>  -> h
+"| <C-l>  -> l
+"| << ; >> 快速进入命令行
+"| <F4>  fast open terminal
+"| <F3>  open directory
+"| <Esc>  exit neovim terminal emulator
+"| ctrl+t  背景透明/不透明切换
+"_____________________________________________________
+
+
+" 语法检查/高亮 Syntax Checking/Highlighting
+syntax on
+
+" 配色方案 color schmes
+set termguicolors " work with deset
+" set background=dark
+colorscheme desert
+" colorscheme morning
+
+set backspace=indent,eol,start "退格键删除
+set splitbelow  " 分割布局 split layouts
+set splitright
+
+" PEP8风格的缩进
+set tabstop=4 " tab键宽度
+set softtabstop=4 " 退格键每次删除4个空格
+set textwidth=79
+set expandtab
+set autoindent
+set smartindent
+set smarttab " Tab 转空格
+set fileformat=unix
+set encoding=utf-8
+set nu "行号
+" 启用鼠标
+set mouse=a " mouse-=a to cancel
+
+" 去掉输入错误的提示声音
+set novisualbell
+set noerrorbells
+set tm=500
+set ruler  "显示当前行号列号
+set showmatch "括号配对并高亮
+set hlsearch "高亮搜索命中
+set incsearch "打开即时搜索
+set ignorecase "忽略大小写搜索
+set smartcase "必要搜索时大小写敏感
+
+" kj 替换 Esc
+inoremap kj <Esc>
+"L ->回到行尾
+map L $
+"H ->回到行首
+map H 0
+
+" 分屏窗口移动, Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+" Map ; to :and save a million keystrokes 快速进入命令行
+nnoremap ; :
+" Fast splitly open terminal
+" nnoremap <F4> :split term://bash<cr>
+nnoremap <F4> :split term://zsh<cr>
+" Fast into directory
+nnoremap <F3> :Ve<cr>
+" exit neovim terminal emulator
+tnoremap <Esc> <C-\><C-n>
+" for # indent, python文件中输入新行时#号注释不切回行首
+autocmd BufNewFile,BufRead *.py inoremap # X<c-h>#
+
+" 针对不同文件类型采用不同缩进格式
+filetype indent on
+autocmd FileType c setlocal shiftwidth=8
+autocmd FileType ruby setlocal shiftwidth=2
+autocmd FileType python setlocal shiftwidth=4
+autocmd FileType html setlocal shiftwidth=2
+autocmd FileType htmldjango setlocal shiftwidth=2
+autocmd FileType go setlocal shiftwidth=4
+autocmd FileType java setlocal shiftwidth=2
+autocmd FileType javascript setlocal shiftwidth=2
+autocmd FileType sh setlocal shiftwidth=4
+autocmd FileType yaml setlocal shiftwidth=2
+
+" 打开自动定位到最后编辑的位置, 需要确认 .viminfo 当前用户可写
+if has("autocmd")                                                          
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif                                                        
+endif
+
+" 保存文件时删除多余行尾空格
+fun! <SID>StripTrailingWhitespaces()
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  call cursor(l, c)
+endfun
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces    ()
+
+" 定义函数，检查文件类型并自动插入文件头
+autocmd BufNewFile *.sh,*.py,*.c,*.cpp exec ":call AutoSetFileHead()"
+function! AutoSetFileHead()
+  if &filetype == 'sh'
+    call setline(1, "\#!/bin/bash")
+  endif
+
+  if &filetype == 'python'
+    call setline(1, "\# -*- coding:utf-8 -*-")
+  endif
+
+  if &filetype == 'cpp'
+    call setline(1, "\#include <iostream>")
+  endif
+
+  if &filetype == 'c'
+    call setline(1, "\#include <stdio.h>")
+  endif
+
+  normal G
+  normal o
+  normal o
+endfunc
+
+" 背景透明/不透明切换, ctrl+t
+let t:is_transparent = 0
+function! Toggle_transparent()
+        if t:is_transparent == 0
+                hi Normal guibg=NONE ctermbg=NONE
+                let t:is_transparent = 1
+        else
+                set background=dark
+                let t:is_transparent = 0
+        endif
+endfunction
+nnoremap <C-t> : call Toggle_transparent()<CR>
+
+" Display a manual page in a nice way.
+" help doc for:help man
+runtime ftplugin/man.vim
