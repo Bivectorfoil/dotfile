@@ -23,6 +23,7 @@ set nocompatible  " not compatible with vi
 syntax on
 
 " 配色方案 color schmes
+" true colors supports
 set termguicolors " work with deset
 " set background=dark
 colorscheme desert
