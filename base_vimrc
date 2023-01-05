@@ -41,7 +41,7 @@ set expandtab
 set autoindent
 set smartindent
 set smarttab " Tab 转空格
-set fileformat=unix
+" set fileformat=unix " 不强制用 unix 风格的文件结尾符，避免跨平台的问题
 set encoding=utf-8
 set nu "行号
 " 启用鼠标
