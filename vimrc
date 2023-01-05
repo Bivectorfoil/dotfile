@@ -210,7 +210,7 @@ set expandtab
 set autoindent
 set smartindent
 set smarttab " Tab 转空格
-set fileformat=unix
+" set fileformat=unix " 不强制要求
 
 set encoding=utf-8
 
