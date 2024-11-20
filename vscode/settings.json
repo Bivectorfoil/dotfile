@@ -1,0 +1,28 @@
+{
+    "vim.vimrc.enable": true,
+    "vim.vimrc.path": "~/.vimrc",
+    // follow: https://medium.com/@realjohnnylau/vscode-vim-easymotion-%E9%85%8D%E7%BD%AE-6b64bba642cf
+    // vim easymotion 快速移动
+    "vim.easymotion": true,
+    //映射空格键为 easymotion Start of word 指令快捷键
+    // 用法：按下 <space>，页面会提示可跳转到的字符
+    "vim.normalModeKeyBindingsNonRecursive": [{
+        "before": [" "],
+        "after": ["leader", "leader", "leader", "b", "d", "w"]
+    }],
+    //修复光标经过折叠代码时自动展开的 bug
+    "vim.foldfix": true,
+    "vim.useCtrlKeys": true,
+    "vim.handleKeys": {
+        "<C-f>": false,
+        "<C-r>": false,
+        "<C-p>": false,
+        "<C-l>": false,
+        "<C-a>": false,
+        "<C-c>": false,
+        "<C-d>": true,
+        "<C-y>": false,
+    },
+    "editor.fontSize": 16,
+    "editor.fontFamily": "\"Cascadia Mono\",Consolas, 'Courier New', monospace"
+}
